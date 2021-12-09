@@ -95,5 +95,5 @@ int main() {
   // void CreateMaster(char *, IndexEntry[], int);
   // void SaveIndex(char *, IndexEntry[], int);
   CreateMaster("parts.bin", index, MAX_RECORDS);
-  SaveIndex("index.bin", index, MAX_RECORDS + 1);
+  SaveIndex("index.dat", index, MAX_RECORDS + 1);
 }

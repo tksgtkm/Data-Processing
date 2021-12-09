@@ -4,9 +4,9 @@
 #include <iostream>
 #include <fstream>
 
-constexpr PartNumSize = 6;
-constexpr MaxName = 24;
-constexpr MaxRecords = 100;
+constexpr int PartNumSize = 6;
+constexpr int MaxName = 24;
+constexpr int MaxRecords = 100;
 
 struct PartRecord {
   char partnum[PartNumSize + 1];
@@ -16,28 +16,34 @@ struct PartRecord {
 };
 
 struct IndexEntry {
-  char partnum[partNumSize + 1];
+  char partnum[PartNumSize + 1];
   int recnum;
 };
 
-void CreateMaster(char *filename, IndexEntry index[], int maxrecords) {
-  PartRecord part;
-  int search_result, search(char[], IndexEntry[], int);
-  int num_records = 0;
+void SaveIndex(char *filename, IndexEntry index[]) {
+  std::ofstream findex(filename, std::ios::out | std::ios::binary);
 
-  std::ofstream ftxt("index.txt");
+  findex.write((const char *) index, sizeof(IndexEntry));
+  findex.close();
+}
 
-  if  (!ftxt) {
-    std::cout << "don't open txt file.\n";
-    return 1;
+
+int main() {
+  IndexEntry index[MaxRecords + 1];
+  std::ifstream fin("parts.txt", std::ios::in | std::ios::binary);
+  std::ofstream fout("parts.dat", std::ios::out | std::ios::binary);
+  PartRecord inv[4];
+
+  for (int i=0; i<4; i++) {
+    fin.read((char *) &inv[i], sizeof(PartRecord));
+
+    fout.write((const char *) &inv[i], sizeof(PartRecord));
   }
 
-  std::ofstream fbin("index.sst", std::ios::out | std::ios::binary);
+  SaveIndex("index.bin", index);
 
-  if (!fbin) {
-    std::cout << " don't open bin file.\n";
-    return 1;
-  }
+  fin.close();
+  fout.close();
 
-
+  return 0;
 }
