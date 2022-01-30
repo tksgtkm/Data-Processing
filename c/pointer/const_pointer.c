@@ -1,10 +1,12 @@
 #include <stdio.h>
 
 int main() {
-  int *i_p               = 0;
-  int const *ic_p        = 0;
-  int *const i_pc        = 0;
-  int const *const ic_pc = 0;
+  // ポインタが指す値は変更できない
+  int *i_p               = 0; // intへのポインタ
+  int const *ic_p        = 0; // const int へのポインタ
+  // i_pc自体の値を変更することはできる
+  int *const i_pc        = 0; // 非定数への定数ポインタ
+  int const *const ic_pc = 0; // 定数への定数ポインタ
 
   #if 0
   i_p = i_p;
@@ -19,10 +21,10 @@ int main() {
   ic_p = ic_pc;
 
   #if 0
-  int **i_p_p               = 0;
-  int const **ic_p_p        = 0;
+  int **i_p_p               = 0; // 多重間接参照
+  int const **ic_p_p        = 0; // 定数ポインタへの多重間接参照
   int *const *i_pc_p        = 0;
-  int const *const *ic_pc_p = 0;
+  int const *const *ic_pc_p = 0;// 定数への定数ポインタへのポインタ
   #endif
 
   typedef int *T;
